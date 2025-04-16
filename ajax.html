@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX API</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="ajax.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1 class="neon-text">Web-programozás-1 Előadás Házi feladat</h1>
+        <p class="sub-heading">Modern fejlesztési technológiák</p>
+    </header>
+
+    <nav>
+      <ul>
+          <li><a href="index.html">Főoldal</a></li>
+          <li><a href="tabla.html">Táblázat</a></li>
+          <li><a href="html5.html">HTML5 API-k</a></li>
+          <li><a href="chartjs.html">Chart.js</a></li>
+          <li class="active"><a href="ajax.html">AJAX</a></li>
+          <li><a href="oojs.html">OOJS</a></li>
+      </ul>
+  </nav>
+
+<section id="content">
+    <h2>AJAX CRUD API</h2>
+
+    <button onclick="fetchData()">Adatok betöltése</button>
+    <ul id="dataList"></ul>
+    <div id="stats"></div>
+
+    <h3>Új bejegyzés létrehozása</h3>
+    <input type="text" id="newTitle" placeholder="Cím (max 30 karakter)">
+    <input type="number" id="newHeight" placeholder="Height">
+    <button onclick="createData()">Hozzáadás</button>
+
+    <h3>Adat módosítása</h3>
+    <input type="number" id="updateId" placeholder="ID">
+    <button onclick="getDataForId()">Adatok betöltése szerkesztéshez</button><br>
+    <input type="text" id="updateTitle" placeholder="Új cím (max 30 karakter)">
+    <input type="number" id="updateHeight" placeholder="Új height">
+    <button onclick="updateData()">Módosítás</button>
+
+    <h3>Adat törlése</h3>
+    <input type="number" id="deleteId" placeholder="ID">
+    <button onclick="deleteData()">Törlés</button>
+
+    <div id="responseMessage"></div>
+  </section>
+
+
+<footer>
+    <p>Készítette: <strong>[Mohácsi Richárd]</strong> - Neptun kód: <strong>[ZKGA6I]</strong></p>
+    <p>Készítette: <strong>[Czégány Viktor]</strong> - Neptun kód: <strong>[BL6H5O]</strong></p>
+</footer>
+
+</body>
+</html>
+

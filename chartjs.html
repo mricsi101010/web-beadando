@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChartJS</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    main#content {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+    table#chart-table {
+      background: white;
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    table#chart-table td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    canvas#chartCanvas {
+      display: block;
+      margin: 20px auto;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Web-programozás-1 Előadás Házi feladat</h1>
+  </header>
+
+  <nav>
+    <ul>
+        <li><a href="index.html">Főoldal</a></li>
+        <li><a href="tabla.html">Táblázat</a></li>
+        <li><a href="html5.html">HTML5 API-k</a></li>
+        <li><a href="chartjs.html">Chart.js</a></li>
+        <li class="active"><a href="ajax.html">AJAX</a></li>
+        <li><a href="oojs.html">OOJS</a></li>
+    </ul>
+</nav>
+
+  <aside>
+    <p>Ez az oldal egy 5x5-ös táblázatból készített vonaldiagramot jelenít meg. Kattints egy sorra!</p>
+  </aside>
+
+  <main id="content">
+    <h2>ChartJS példa</h2>
+    <table id="chart-table" style="cursor: pointer;">
+      <tbody>
+        <tr><td>5</td><td>10</td><td>15</td><td>20</td><td>25</td></tr>
+        <tr><td>3</td><td>6</td><td>9</td><td>12</td><td>15</td></tr>
+        <tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+        <tr><td>7</td><td>14</td><td>21</td><td>28</td><td>35</td></tr>
+        <tr><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td></tr>
+      </tbody>
+    </table>
+
+    <canvas id="chartCanvas" width="600" height="300"></canvas>
+  </main>
+
+  <footer>
+    <p>Készítette: <strong>[Mohácsi Richárd]</strong> - Neptun kód: <strong>[ZKGA6I]</strong></p>
+    <p>Készítette: <strong>[Czégány Viktor]</strong> - Neptun kód: <strong>[BL6H5O]</strong></p>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("chartCanvas").getContext("2d");
+    let chart;
+
+    function drawChart(data) {
+      if (chart) chart.destroy();
+      chart = new Chart(canvas, {
+        type: "line",
+        data: {
+          labels: ["1", "2", "3", "4", "5"],
+          datasets: [{
+            label: "Kiválasztott sor",
+            data: data,
+            borderColor: "blue",
+            borderWidth: 2,
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: "top" },
+            title: { display: true, text: "Kiválasztott sor adatainak diagramja" }
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll("#chart-table tr").forEach(row => {
+      row.addEventListener("click", () => {
+        const values = [...row.querySelectorAll("td")].map(cell => parseFloat(cell.textContent));
+        drawChart(values);
+      });
+    });
+  </script>
+</body>
+</html>

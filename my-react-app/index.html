@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React feladat</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    nav {
+      background-color: #333;
+      padding: 10px;
+    }
+    nav button {
+      margin-right: 10px;
+      padding: 10px;
+      color: white;
+      background-color: #444;
+      border: none;
+      cursor: pointer;
+    }
+    nav button:hover {
+      background-color: #666;
+    }
+    #app {
+      padding: 20px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      gap: 5px;
+      margin-top: 20px;
+    }
+    .square {
+      width: 80px;
+      height: 80px;
+      font-size: 2em;
+      text-align: center;
+      vertical-align: middle;
+      line-height: 80px;
+      border: 1px solid #333;
+      cursor: pointer;
+    }
+    .calculator {
+      max-width: 240px;
+      margin: 20px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+    .calculator-screen {
+      width: 100%;
+      height: 40px;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      text-align: right;
+      padding-right: 10px;
+      box-sizing: border-box;
+    }
+    .calculator-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+    .calculator-buttons button {
+      padding: 15px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <button onclick="setView('counter')">Számláló</button>
+    <button onclick="setView('mirror')">Szövegfordító</button>
+    <button onclick="setView('tictactoe')">Tic Tac Toe</button>
+    <button onclick="setView('calculator')">Számológép</button>
+  </nav>
+  <div id="app"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const container = document.getElementById("app");
+    const root = ReactDOM.createRoot(container);
+
+    function Counter() {
+      const [count, setCount] = useState(0);
+      return (
+        <div>
+          <h2>Számláló</h2>
+          <p>Érték: {count}</p>
+          <button onClick={() => setCount(count + 1)}>Növel</button>
+          <button onClick={() => setCount(count - 1)}>Csökkent</button>
+        </div>
+      );
+    }
+
+    function Mirror() {
+      const [text, setText] = useState("");
+
+      function handleChange(e) {
+        setText(e.target.value.split("").reverse().join("")); // Megfordítja a szöveget
+      }
+
+      return (
+        <div>
+          <h2>Szövegfordító</h2>
+          <input 
+            type="text" 
+            value={text} 
+            onChange={handleChange} 
+            placeholder="Írj be valamit..." 
+          />
+          <p>Visszatükrözve: {text}</p>
+        </div>
+      );
+    }
+
+    function TicTacToe() {
+      const [squares, setSquares] = useState(Array(9).fill(null));
+      const [xIsNext, setXIsNext] = useState(true);
+
+      function handleClick(i) {
+        if (squares[i] || calculateWinner(squares)) return;
+        const next = squares.slice();
+        next[i] = xIsNext ? "X" : "O";
+        setSquares(next);
+        setXIsNext(!xIsNext);
+      }
+
+      const winner = calculateWinner(squares);
+      let status = winner ? `Győztes: ${winner}` : `Következő: ${xIsNext ? "X" : "O"}`;
+
+      return (
+        <div>
+          <h2>Tic Tac Toe</h2>
+          <div>{status}</div>
+          <div className="board">
+            {squares.map((val, i) => (
+              <div key={i} className="square" onClick={() => handleClick(i)}>{val}</div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function calculateWinner(sq) {
+      const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+      for (let [a, b, c] of lines) {
+        if (sq[a] && sq[a] === sq[b] && sq[a] === sq[c]) {
+          return sq[a];
+        }
+      }
+      return null;
+    }
+
+    function Calculator() {
+      const [input, setInput] = useState("");
+
+      function handleClick(value) {
+        if (value === "C") {
+          setInput("");
+        } else if (value === "=") {
+          try {
+            setInput(eval(input).toString());
+          } catch {
+            setInput("Hiba");
+          }
+        } else {
+          setInput(input + value);
+        }
+      }
+
+      const buttons = [
+        "7", "8", "9", "/",
+        "4", "5", "6", "*",
+        "1", "2", "3", "-",
+        "0", ".", "=", "+",
+        "C"
+      ];
+
+      return (
+        <div>
+          <h2>Számológép</h2>
+          <div className="calculator">
+            <div className="calculator-screen">{input}</div>
+            <div className="calculator-buttons">
+              {buttons.map((b, i) => (
+                <button key={i} onClick={() => handleClick(b)}>{b}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function setView(view) {
+      if (view === 'counter') root.render(<Counter />);
+      if (view === 'mirror') root.render(<Mirror />);
+      if (view === 'tictactoe') root.render(<TicTacToe />);
+      if (view === 'calculator') root.render(<Calculator />);
+    }
+
+    setView('counter');
+  </script>
+</body>
+</html>

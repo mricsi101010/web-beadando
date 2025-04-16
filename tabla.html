@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Táblázat</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="tabla.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Web-programozás-1 Előadás Házi feladat</h1>
+  </header>
+
+  <nav>
+    <ul>
+        <li><a href="index.html">Főoldal</a></li>
+        <li><a href="tabla.html">Táblázat</a></li>
+        <li><a href="html5.html">HTML5 API-k</a></li>
+        <li><a href="chartjs.html">Chart.js</a></li>
+        <li class="active"><a href="ajax.html">AJAX</a></li>
+        <li><a href="oojs.html">OOJS</a></li>
+    </ul>
+</nav>
+
+  <aside>
+    <p>A táblázat oldalon CRUD műveletek, keresés és rendezés is elérhető lesz.</p>
+  </aside>
+
+  <main id="content">
+    <h2>CRUD Táblázat</h2>
+
+    <form id="data-form">
+      <input type="text" id="name" name="name" placeholder="Név" required>
+      <input type="number" id="age" name="age" placeholder="Kor" required min="0">
+      <input type="text" id="city" name="city" placeholder="Város" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <button type="submit">Hozzáadás</button>
+    </form>
+
+    <input type="text" id="search" placeholder="Keresés...">
+
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th data-col="name">Név</th>
+          <th data-col="age">Kor</th>
+          <th data-col="city">Város</th>
+          <th data-col="email">Email</th>
+          <th>Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- A JavaScript ide tölti be a sorokat -->
+      </tbody>
+    </table>
+  </main>
+
+  <section id="canvas-section">
+    <h2>Canvas példa</h2>
+    <canvas id="myCanvas" width="300" height="150" style="border:1px solid #000000;"></canvas>
+    <button onclick="drawOnCanvas()">Rajzolás</button>
+  </section>
+
+  <section id="dragdrop-section">
+    <h2>Drag & Drop példa</h2>
+    <div id="drag-box" draggable="true" style="width:100px;height:100px;background:red;color:white;text-align:center;line-height:100px;">Húzz engem</div>
+    <div id="drop-zone" style="width:200px;height:100px;border:2px dashed gray;margin-top:10px;">Dobd ide</div>
+  </section>
+
+  <section id="svg-section">
+    <h2>SVG példa</h2>
+    <svg width="300" height="150">
+      <rect x="20" y="20" width="100" height="100" fill="lightblue" stroke="black" stroke-width="2" />
+      <text x="30" y="80" fill="black" font-size="16">SVG példa</text>
+    </svg>
+  </section>
+
+  <footer>
+    <p>Készítette: <strong>[Mohácsi Richárd]</strong> - Neptun kód: <strong>[ZKGA6I]</strong></p>
+    <p>Készítette: <strong>[Czégány Viktor]</strong> - Neptun kód: <strong>[BL6H5O]</strong></p>
+  </footer>
+
+  <script>
+    function drawOnCanvas() {
+      const canvas = document.getElementById('myCanvas');
+      if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'lightblue';
+        ctx.fillRect(20, 20, 100, 100);
+        ctx.fillStyle = 'black';
+        ctx.font = '16px Arial';
+        ctx.fillText('Canvas példa', 30, 80);
+      }
+    }
+
+    const dragBox = document.getElementById("drag-box");
+    const dropZone = document.getElementById("drop-zone");
+
+    dragBox.addEventListener("dragstart", (e) => {
+      e.dataTransfer.setData("text/plain", "Húzott elem");
+    });
+
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.innerHTML = "Sikeresen ide dobtad!";
+      dropZone.style.background = "lightgreen";
+    });
+  </script>
+</body>
+</html>
